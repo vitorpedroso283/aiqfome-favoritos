@@ -19,7 +19,7 @@ services:
       DB_PASSWORD: laravel
 
   db:
-    image: postgres:15-alpine
+    image: postgres:17.5-alpine
     container_name: laravel-db
     environment:
       POSTGRES_DB: laravel

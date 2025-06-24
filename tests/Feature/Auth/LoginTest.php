@@ -2,6 +2,9 @@
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 it('logs in a user with valid credentials', function () {
     $user = User::factory()->create([
@@ -9,7 +12,7 @@ it('logs in a user with valid credentials', function () {
         'password' => Hash::make('password123'),
     ]);
 
-    $response = $this->postJson('/auth/login', [
+    $response = $this->postJson('/api/auth/login', [
         'email' => 'user@test.com',
         'password' => 'password123',
     ]);
@@ -24,7 +27,7 @@ it('fails to login with invalid credentials', function () {
         'password' => Hash::make('correct-password'),
     ]);
 
-    $response = $this->postJson('/auth/login', [
+    $response = $this->postJson('/api/auth/login', [
         'email' => 'user@test.com',
         'password' => 'wrong-password',
     ]);

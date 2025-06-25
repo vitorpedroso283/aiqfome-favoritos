@@ -22,7 +22,7 @@ services:
     image: postgres:17.5-alpine
     container_name: laravel-db
     environment:
-      POSTGRES_DB: laravel
+      POSTGRES_DB: aiqfome-favorite.db
       POSTGRES_USER: laravel
       POSTGRES_PASSWORD: laravel
     volumes:

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\CustomerFavorite;
 
+use App\Dto\CustomerFavorite\StoreCustomerFavoriteDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerFavorite\StoreCustomerFavoriteRequest;
 use App\Http\Requests\ListCustomerFavoritesRequest;
 use App\Http\Resources\CustomerFavorite\CustomerFavoriteResource;
+use App\Models\Customer;
 use App\Services\CustomerFavorite\CustomerFavoriteService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CustomerFavoriteController extends Controller
 {
@@ -106,5 +110,62 @@ class CustomerFavoriteController extends Controller
         $favorites = $this->customerFavoriteService->all($customer_id, $perPage, $orderBy, $orderDir);
 
         return CustomerFavoriteResource::collection($favorites);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/customers/{customer}/favorites",
+     *     summary="Adiciona um produto aos favoritos do cliente",
+     *     tags={"Favorites"},
+     *     security={{"meu_token": {}}},
+     *     @OA\Parameter(
+     *         name="customer",
+     *         in="path",
+     *         required=true,
+     *         description="ID do cliente",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Informe o ID do produto para adicionar aos favoritos.",
+     *         @OA\JsonContent(
+     *             required={"product_id"},
+     *             @OA\Property(property="product_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Produto adicionado aos favoritos com sucesso.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="product_id", type="integer", example=1),
+     *                 @OA\Property(property="title", type="string", example="Produto Teste"),
+     *                 @OA\Property(property="price", type="number", example=99.99),
+     *                 @OA\Property(property="image", type="string", example="https://exemplo.com/image.png"),
+     *                 @OA\Property(property="review", type="object",
+     *                     @OA\Property(property="rate", type="number", example=4.5),
+     *                     @OA\Property(property="count", type="integer", example=200)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Cliente não encontrado."),
+     *     @OA\Response(response=422, description="Erro de validação.")
+     * )
+     */
+    public function store(int $customer, StoreCustomerFavoriteRequest $request): JsonResponse|CustomerFavoriteResource
+    {
+
+        if (!Customer::find($customer)) {
+            return response()->json([
+                'error' => 'Customer not found',
+            ], 404);
+        }
+
+        $dto = StoreCustomerFavoriteDto::fromArray($request->validated());
+
+        $favorite = $this->customerFavoriteService->add($customer, $dto);
+
+        return new CustomerFavoriteResource($favorite);
     }
 }

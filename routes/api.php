@@ -12,5 +12,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('customers')->group(function () {
         Route::post('/', [CustomerController::class, 'store']);
         Route::put('/{id}', [CustomerController::class, 'update']);
+        Route::get('/{id}', [CustomerController::class, 'show']);
     });
 });

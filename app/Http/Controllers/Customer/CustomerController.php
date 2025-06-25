@@ -131,4 +131,43 @@ class CustomerController extends Controller
 
         return new CustomerResource($customer);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/customers/{id}",
+     *     summary="Exibir dados de um cliente específico",
+     *     tags={"Customers"},
+     *     security={{"meu_token": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID do cliente a ser exibido",
+     *         @OA\Schema(type="integer", example=42)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cliente encontrado.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=42),
+     *                 @OA\Property(property="name", type="string", example="João Marinho"),
+     *                 @OA\Property(property="email", type="string", example="joao.marinho@exemplo.com"),
+     *                 @OA\Property(property="created_at", type="string", example="2025-06-25 10:45:12"),
+     *                 @OA\Property(property="updated_at", type="string", example="2025-06-25 10:45:12")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Cliente não encontrado."
+     *     )
+     * )
+     */
+    public function show(int $id): CustomerResource
+    {
+        $customer = $this->customerService->find($id);
+
+        return new CustomerResource($customer);
+    }
 }

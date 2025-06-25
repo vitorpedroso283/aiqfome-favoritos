@@ -47,4 +47,9 @@ class CustomerService
             throw $e;
         }
     }
+
+    public function find(int $id): Customer
+    {
+        return Customer::findOrFail($id);
+    }
 }

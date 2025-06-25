@@ -168,4 +168,43 @@ class CustomerFavoriteController extends Controller
 
         return new CustomerFavoriteResource($favorite);
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/customers/{customer}/favorites/{product}",
+     *     summary="Remove um produto dos favoritos do cliente",
+     *     tags={"Favorites"},
+     *     security={{"meu_token": {}}},
+     *     @OA\Parameter(
+     *         name="customer",
+     *         in="path",
+     *         required=true,
+     *         description="ID do cliente",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="product",
+     *         in="path",
+     *         required=true,
+     *         description="ID do produto",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(response=204, description="Removido com sucesso."),
+     *     @OA\Response(response=404, description="Cliente ou favorito não encontrado.")
+     * )
+     */
+    public function destroy(int $customer, int $product): JsonResponse
+    {
+        if (!Customer::find($customer)) {
+            return response()->json(['error' => 'Customer not found'], 404);
+        }
+
+        $deleted = $this->customerFavoriteService->remove($customer, $product);
+
+        if (!$deleted) {
+            return response()->json(['error' => 'Favorite not found'], 404);
+        }
+
+        return response()->json([], 204);
+    }
 }

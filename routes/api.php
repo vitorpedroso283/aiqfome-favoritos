@@ -14,5 +14,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [CustomerController::class, 'index']);
         Route::put('/{id}', [CustomerController::class, 'update']);
         Route::get('/{id}', [CustomerController::class, 'show']);
+        Route::delete('/{id}', [CustomerController::class, 'destroy']);
     });
 });

@@ -57,5 +57,19 @@ class CustomerService
     {
         return Customer::orderBy($orderBy, $orderDir)->paginate($perPage);
     }
-    
+
+    public function delete(int $id): void
+    {
+        try {
+            $customer = Customer::findOrFail($id);
+            $customer->delete();
+        } catch (\Exception $e) {
+            Log::error('Error deleting customer', [
+                'customer_id' => $id,
+                'error' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
+    }
 }

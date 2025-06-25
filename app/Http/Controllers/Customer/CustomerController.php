@@ -252,4 +252,34 @@ class CustomerController extends Controller
 
         return CustomerResource::collection($customers);
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/customers/{id}",
+     *     summary="Remover um cliente",
+     *     tags={"Customers"},
+     *     security={{"meu_token": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID do cliente a ser excluído",
+     *         @OA\Schema(type="integer", example=42)
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Cliente excluído com sucesso."
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Cliente não encontrado."
+     *     )
+     * )
+     */
+    public function destroy(int $id): \Illuminate\Http\Response
+    {
+        $this->customerService->delete($id);
+
+        return response()->noContent();
+    }
 }

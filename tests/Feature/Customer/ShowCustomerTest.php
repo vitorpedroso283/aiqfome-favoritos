@@ -9,6 +9,7 @@ beforeEach(function () {
     $this->user = User::factory()->create();
     $this->token = $this->user->createToken('test')->plainTextToken;
 });
+
 it('retrieves a customer by id', function () {
     $customer = \App\Models\Customer::factory()->create([
         'name' => 'João Marinho',

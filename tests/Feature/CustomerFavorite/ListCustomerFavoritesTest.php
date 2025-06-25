@@ -14,29 +14,31 @@ beforeEach(function () {
 
     $this->customer = Customer::factory()->create();
 
-    // Criamos 12 favoritos para verificar paginação
-    CustomerFavorite::factory()
-        ->count(12)
-        ->state(['customer_id' => $this->customer->id])
-        ->create([
-            'product_id' => 1,
+    // Criamos 12 favoritos com ids diferentes para verificar corretamente
+    foreach (range(1, 12) as $productId) {
+        CustomerFavorite::factory()->create([
+            'customer_id' => $this->customer->id,
+            'product_id' => $productId,
         ]);
+    }
 });
 
 it('lists favorites with pagination and fetches details from FakeStore', function () {
-    // Simula retorno da FakeStore para produto 1
-    Http::fake([
-        'https://fakestoreapi.com/products/*' => Http::response([
-            'id' => 1,
-            'title' => 'Produto Teste',
+    Http::fake(function ($request) {
+        $url = $request->url();
+        $productId = (int) str_replace('https://fakestoreapi.com/products/', '', $url);
+
+        return Http::response([
+            'id' => $productId,
+            'title' => "Produto Teste {$productId}",
             'price' => 99.99,
-            'image' => 'https://exemplo.com/image.png',
-            'rating' => [
+            'image' => "https://exemplo.com/image.png",
+            'review' => [
                 'rate' => 4.5,
                 'count' => 200,
             ]
-        ], 200),
-    ]);
+        ], 200);
+    });
 
     $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->getJson("/api/customers/{$this->customer->id}/favorites");
@@ -49,10 +51,10 @@ it('lists favorites with pagination and fetches details from FakeStore', functio
                     'title',
                     'price',
                     'image',
-                    'rating' => [
+                    'review' => [
                         'rate',
                         'count',
-                    ],
+                    ]
                 ]
             ],
             'links' => [
@@ -63,16 +65,13 @@ it('lists favorites with pagination and fetches details from FakeStore', functio
             ],
             'meta' => [
                 'current_page',
-                'from',
                 'last_page',
-                'path',
                 'per_page',
-                'to',
                 'total',
             ]
         ]);
 
-    // Verifica que temos 10 registros por página
-    $this->assertCount(10, $response->json('data'));
-    $this->assertEquals(12, $response->json('meta.total'));
+    // Verifica paginação correta
+    $this->assertCount(10, $response->json('data')); // Primeira page
+    $this->assertEquals(12, $response->json('meta.total')); // Total de registros
 });

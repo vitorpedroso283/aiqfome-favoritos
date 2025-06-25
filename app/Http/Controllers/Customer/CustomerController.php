@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Customer;
 
 use App\Dto\Customer\CustomerDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\ListCustomersRequest;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Resources\Customer\CustomerResource;
 use App\Services\Customer\CustomerService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Collection;
 
 class CustomerController extends Controller
 {
@@ -169,5 +172,84 @@ class CustomerController extends Controller
         $customer = $this->customerService->find($id);
 
         return new CustomerResource($customer);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/customers",
+     *     summary="Listar todos os clientes com paginação e ordenação",
+     *     tags={"Customers"},
+     *     security={{"meu_token": {}}},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Número da página",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Quantos registros por página",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=15)
+     *     ),
+     *     @OA\Parameter(
+     *         name="order_by",
+     *         in="query",
+     *         description="Campo para ordenação",
+     *         required=false,
+     *         @OA\Schema(type="string", example="name")
+     *     ),
+     *     @OA\Parameter(
+     *         name="order_dir",
+     *         in="query",
+     *         description="Direção da ordenação (asc|desc)",
+     *         required=false,
+     *         @OA\Schema(type="string", example="asc")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de clientes carregada com sucesso.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="João Marinho"),
+     *                     @OA\Property(property="email", type="string", example="joao.marinho@exemplo.com"),
+     *                     @OA\Property(property="created_at", type="string", example="2025-06-25 10:45:12"),
+     *                     @OA\Property(property="updated_at", type="string", example="2025-06-25 10:45:12")
+     *                 )
+     *             ),
+     *             @OA\Property(property="links", type="object",
+     *                 @OA\Property(property="first", type="string", example="http://localhost/api/customers?page=1"),
+     *                 @OA\Property(property="last", type="string", example="http://localhost/api/customers?page=5"),
+     *                 @OA\Property(property="prev", type="string", example=null),
+     *                 @OA\Property(property="next", type="string", example="http://localhost/api/customers?page=2")
+     *             ),
+     *             @OA\Property(property="meta", type="object",
+     *                 @OA\Property(property="current_page", type="integer", example=1),
+     *                 @OA\Property(property="from", type="integer", example=1),
+     *                 @OA\Property(property="last_page", type="integer", example=5),
+     *                 @OA\Property(property="path", type="string", example="http://localhost/api/customers"),
+     *                 @OA\Property(property="per_page", type="integer", example=15),
+     *                 @OA\Property(property="to", type="integer", example=15),
+     *                 @OA\Property(property="total", type="integer", example=72)
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function index(ListCustomersRequest $request): AnonymousResourceCollection
+    {
+        $validated = $request->validated();
+
+        $perPage = $validated['per_page'] ?? 15;
+        $orderBy = $validated['order_by'] ?? 'id';
+        $orderDir = $validated['order_dir'] ?? 'asc';
+
+        $customers = $this->customerService->all($perPage, $orderBy, $orderDir);
+
+        return CustomerResource::collection($customers);
     }
 }

@@ -52,4 +52,10 @@ class CustomerService
     {
         return Customer::findOrFail($id);
     }
+
+    public function all(int $perPage = 15, string $orderBy = 'id', string $orderDir = 'asc')
+    {
+        return Customer::orderBy($orderBy, $orderDir)->paginate($perPage);
+    }
+    
 }

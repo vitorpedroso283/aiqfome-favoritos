@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\Auth\LoginResource;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 
@@ -62,6 +63,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credenciais Inválidas'], 401);
         }
 
-        return response()->json(['token' => $token]);
+        return response()->json(new LoginResource($token));
     }
 }

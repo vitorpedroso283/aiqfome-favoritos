@@ -35,3 +35,38 @@ it('fails to login with invalid credentials', function () {
     $response->assertStatus(401);
     $response->assertJson(['message' => 'Credenciais Inválidas']);
 });
+
+it('fails if email is not provided', function () {
+    $response = $this->postJson('/api/auth/login', [
+        'password' => 'password123',
+    ]);
+
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['email']);
+});
+
+it('fails if password is not provided', function () {
+    $response = $this->postJson('/api/auth/login', [
+        'email' => 'user@test.com',
+    ]);
+
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['password']);
+});
+
+it('returns the token upon successful login', function () {
+    User::factory()->create([
+        'email' => 'user@test.com',
+        'password' => Hash::make('password123'),
+    ]);
+
+    $response = $this->postJson('/api/auth/login', [
+        'email' => 'user@test.com',
+        'password' => 'password123',
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'token',
+        ]);
+});

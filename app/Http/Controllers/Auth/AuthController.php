@@ -8,14 +8,6 @@ use App\Http\Resources\Auth\LoginResource;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 
-/**
- * @OA\Info(
- *      title="AiQFome Favoritos API",
- *      version="1.0.0",
- *      description="API para integração com AiQFome"
- * )
- */
-
 class AuthController extends Controller
 {
     protected AuthService $authService;
@@ -35,22 +27,24 @@ class AuthController extends Controller
      *         description="Credenciais para autenticação",
      *         @OA\JsonContent(
      *             required={"email","password"},
-     *             @OA\Property(property="email", type="string", example="user@test.com"),
-     *             @OA\Property(property="password", type="string", example="password123")
+     *             @OA\Property(property="email", type="string", example="esfomeado@user.com"),
+     *             @OA\Property(property="password", type="string", example="tocomfome")
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Sucesso",
      *         @OA\JsonContent(
-     *             @OA\Property(property="token", type="string")
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="token", type="string", example="6|abxZ9NxCBKDj5SGxa8oaB4OsJBbIxbJpUMh1ejmC824109e0")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="Credenciais Inválidas",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
+     *             @OA\Property(property="message", type="string", example="Invalid credentials.")
      *         )
      *     )
      * )
@@ -63,6 +57,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credenciais Inválidas'], 401);
         }
 
-        return response()->json(new LoginResource($token));
+        return new LoginResource($token)->response();
     }
 }

@@ -26,11 +26,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "user@test.com"
+                                        "example": "esfomeado@user.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "password123"
+                                        "example": "tocomfome"
                                     }
                                 },
                                 "type": "object"
@@ -45,8 +45,14 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "token": {
-                                            "type": "string"
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "6|abxZ9NxCBKDj5SGxa8oaB4OsJBbIxbJpUMh1ejmC824109e0"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -61,7 +67,8 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "Invalid credentials."
                                         }
                                     },
                                     "type": "object"
@@ -71,12 +78,139 @@
                     }
                 }
             }
+        },
+        "/api/customers": {
+            "post": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Cadastrar um novo cliente",
+                "operationId": "94fb57c92fadaf8fa361cd37676d50ff",
+                "requestBody": {
+                    "description": "Informe o nome e e‑mail para realizar o cadastro do cliente.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Maria Oliveira"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "maria.oliveira@exemplo.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cliente cadastrado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 42
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Maria Oliveira"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "maria.oliveira@exemplo.com"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2025-06-25 10:45:12"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2025-06-25 10:45:12"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Alguns campos não foram preenchidos corretamente."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "O nome do cliente é obrigatório."
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Informe um e‑mail válido e não utilizado anteriormente."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "meu_token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "meu_token": {
+                "type": "http",
+                "description": "Utilize o token no formato: Bearer {token}",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Customers",
+            "description": "Customers"
         }
     ]
 }

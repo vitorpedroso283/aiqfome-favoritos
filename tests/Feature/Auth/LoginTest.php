@@ -18,7 +18,11 @@ it('logs in a user with valid credentials', function () {
     ]);
 
     $response->assertStatus(200);
-    $response->assertJsonStructure(['token']);
+    $response->assertJsonStructure([
+        'data' => [
+            'token',
+        ]
+    ]);
 });
 
 it('fails to login with invalid credentials', function () {
@@ -65,8 +69,9 @@ it('returns the token upon successful login', function () {
         'password' => 'password123',
     ]);
 
-    $response->assertStatus(200)
-        ->assertJsonStructure([
+    $response->assertJsonStructure([
+        'data' => [
             'token',
-        ]);
+        ]
+    ]);
 });

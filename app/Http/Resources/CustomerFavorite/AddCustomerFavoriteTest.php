@@ -80,7 +80,7 @@ it('creates a favorite successfully when all validations pass', function() {
                 'title',
                 'price',
                 'image',
-                'rating' => [
+                'review' => [
                     'rate',
                     'count',
                 ]

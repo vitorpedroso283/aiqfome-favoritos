@@ -1,6 +1,7 @@
 # 🍔 AIQFome - Favoritos API
 
-Esta é a **AIQFome Favoritos API**, uma REST API para **gerenciamento de clientes e seus favoritos de produtos**, integrada à [FakeStore API](https://fakestoreapi.com/docs).
+Esta é a **AIQFome Favoritos API**, uma REST API para **gerenciamento de clientes e seus favoritos de produtos**, integrada à [FakeStore API](https://fakestoreapi.com/docs), criada como parte do teste técnico para a vaga de Desenvolvedor Sênior.
+O objetivo foi demonstrar boas práticas de arquitetura, planejamento e qualidade de código, entregando uma solução clara e escalável para o escopo proposto.
 
 ## 📑 Sumário
 
@@ -96,14 +97,22 @@ A aplicação foi estruturada para refletir uma arquitetura clara e organizada, 
 
 ## 🚀 Como rodar o projeto <a id="como-rodar"></a>
 
-Rodar esta API Laravel + PostgreSQL é simples e direto graças ao Docker! 🙌  
-Basta subir todos os serviços com:
+Rodar esta API Laravel + PostgreSQL é simples e direto graças ao Docker! 🙌
+
+### 📥 1️⃣ Clone o repositório
 
 ```bash
-docker-compose up
+git clone https://github.com/vitorpedroso283/aiqfome-favoritos.git
+cd aiqfome-favoritos
 ```
 
-### ⚙️ O que isso vai subir
+### ⚙️ 2️⃣ Suba todos os serviços
+
+```bash
+docker compose up
+```
+
+### ⚡️ O que isso vai subir
 
 -   **app** — Laravel 12 rodando em `http://localhost:8000`
 -   **db** — PostgreSQL 17 (usando Alpine)
@@ -184,8 +193,7 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
 ```
 
-Feito! ✅  
-Sua aplicação estará rodando em `http://localhost:8000`
+Feito! ✅ Sua aplicação estará rodando em `http://localhost:8000`
 
 ## 👤 Usuário Padrão para Testes <a id="usuario-teste"></a>
 
@@ -195,7 +203,6 @@ Esta aplicação cria automaticamente um usuário padrão para facilitar testes 
 -   **Senha**: `tocomfome`
 
 👉 O usuário é criado automaticamente através do **Seeder** (`database/seeders/UserSeeder.php`), não sendo necessária uma rota de registro para testes básicos.
-
 Se quiser alterar as credenciais, atualize o arquivo `UserSeeder.php`.
 
 ## ✅ Testes e Documentação <a id="testes"></a>

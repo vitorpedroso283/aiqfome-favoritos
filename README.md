@@ -20,7 +20,7 @@ Esta é a **AIQFome Favoritos API**, uma REST API para **gerenciamento de client
 Esta solução foi implementada considerando que a API poderia servir como camada interna do Aiqfome para administrar favoritos e dados de clientes, e não como uma camada diretamente exposta ao cliente final. Dessa forma:
 
 -   Os endpoints recebem `customer_id` explicitamente, para permitir que uma camada interna (ex.: Backend do Aiqfome) faça operações para múltiplos clientes.
--   A autenticação (`user`) não representa o cliente final, mas sim o sistema ou operador responsável por administrar registros e favoritos.
+-   A autenticação (`user`) não representa o cliente final, mas sim o sistema ou operador responsável por administrar registros e favoritos, que nesse caso seria o 'AiQFome'.
 -   Se futuramente necessária, poderia ser adaptada para derivar o `customer_id` direto do token, atendendo ao cenário de cliente final.
 
 ## ⚡️ Cacheamento <a id="cacheamento"></a>

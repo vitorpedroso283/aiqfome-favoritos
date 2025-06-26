@@ -397,6 +397,20 @@ Exemplo de Response (200 — Sucesso):
 -   Dessa maneira, cada feature foi implementada com uma **comprovação prática** de que atende ao escopo requerido, facilitando manutenção e evoluções futuras.
 -   Resultado: menos bugs, mais previsibilidade e uma base de código sólida para escalar e adaptar.
 
+### ⚡️ Limite de Requisições (Rate Limiting)
+
+Esta API implementa **rate limiting** para aumentar a estabilidade e prevenir abusos. Por padrão:
+
+- Limite de **120 requisições por minuto** por IP ou por usuário autenticado.
+- Aplicado automaticamente nas rotas através do middleware `throttle:120,1` do Laravel.
+
+Se precisar alterar, ajuste as configurações em:
+
+- `routes/api.php`, para definir o middleware diretamente nas rotas.
+- `App\Providers\RouteServiceProvider.php`, para personalização por IP, usuário ou tipo de rota.
+
+---
+
 ## 🙌 Considerações Finais <a id="consideracoes"></a>
 
 Este desafio foi uma ótima oportunidade para refletir e praticar boas decisões de arquitetura, planejamento e execução antes de simplesmente começar a codar.

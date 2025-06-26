@@ -9,7 +9,7 @@ Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:120,1'])->group(function () {
     Route::apiResource('customers', CustomerController::class)->only([
         'index',
         'store',

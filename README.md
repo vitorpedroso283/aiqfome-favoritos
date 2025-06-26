@@ -115,7 +115,7 @@ docker compose up
 
 ### ⚡️ O que isso vai subir
 
--   **app** — Laravel 12 rodando em `http://localhost:8000`
+-   **app** — Laravel 12 rodando em [http://localhost:8000](http://localhost:8000)
 -   **db** — PostgreSQL 17 (usando Alpine)
 
 ---
@@ -131,8 +131,6 @@ services:
         container_name: laravel-app
         ports:
             - "8000:8000"
-        volumes:
-            - .:/var/www/html
         depends_on:
             - db
         environment:
@@ -154,16 +152,17 @@ services:
             - db_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
-
 volumes:
     db_data:
 ```
 
 ---
 
-### ⚡️ Configure as Variáveis de Ambiente
+### ⚡️ Variáveis de Ambiente
 
-Antes de subir, copie e ajuste as variáveis para o `.env`:
+> ✅ Já são configuradas automaticamente com o `.env` copiado para a imagem (`.env.example` ➔ `.env`)
+
+Exemplo do `.env` utilizado:
 
 ```env
 APP_NAME=Laravel
@@ -185,16 +184,18 @@ DB_PASSWORD=laravel
 FAKESTORE_URL=https://fakestoreapi.com
 ```
 
-### 🔑 Gerar a APP_KEY e Migrar o Banco
+---
 
-Depois de subir o container, execute:
+### 🔑 Finalização
+
+Depois de subir o container, gere a `APP_KEY` e rode as migrações para finalizar:
 
 ```bash
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
 ```
 
-Feito! ✅ Sua aplicação estará rodando em `http://localhost:8000`
+Feito! 🎉 Sua aplicação estará rodando em **http://localhost:8000** — todas as variáveis e dependências estão corretamente configuradas direto no build.
 
 ## 👤 Usuário Padrão para Testes <a id="usuario-teste"></a>
 

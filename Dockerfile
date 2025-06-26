@@ -18,6 +18,12 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
+# Copia .env.example para .env
+RUN cp .env.example .env
+
+# Instala as dependências do Laravel
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+
 # Dá permissão para o storage e cache
 RUN chmod -R 777 storage bootstrap/cache
 

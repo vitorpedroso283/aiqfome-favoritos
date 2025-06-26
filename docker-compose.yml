@@ -6,8 +6,6 @@ services:
     container_name: laravel-app
     ports:
       - "8000:8000"
-    volumes:
-      - .:/var/www/html
     depends_on:
       - db
     environment:

@@ -735,6 +735,150 @@
                     }
                 ]
             }
+        },
+        "/api/customers/{customer}/favorites": {
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Adiciona um produto aos favoritos do cliente",
+                "operationId": "07c7e5a15cf273eef21a7ed5362d7828",
+                "parameters": [
+                    {
+                        "name": "customer",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Informe o ID do produto para adicionar aos favoritos.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "product_id"
+                                ],
+                                "properties": {
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Produto adicionado aos favoritos com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Produto Teste"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "example": 99.99
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "https://exemplo.com/image.png"
+                                                },
+                                                "review": {
+                                                    "properties": {
+                                                        "rate": {
+                                                            "type": "number",
+                                                            "example": 4.5
+                                                        },
+                                                        "count": {
+                                                            "type": "integer",
+                                                            "example": 200
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cliente não encontrado."
+                    },
+                    "422": {
+                        "description": "Erro de validação."
+                    }
+                },
+                "security": [
+                    {
+                        "meu_token": []
+                    }
+                ]
+            }
+        },
+        "/api/customers/{customer}/favorites/{product}": {
+            "delete": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Remove um produto dos favoritos do cliente",
+                "operationId": "e4cfba87cdd3917ecd3af1ca5294c380",
+                "parameters": [
+                    {
+                        "name": "customer",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Removido com sucesso."
+                    },
+                    "404": {
+                        "description": "Cliente ou favorito não encontrado."
+                    }
+                },
+                "security": [
+                    {
+                        "meu_token": []
+                    }
+                ]
+            }
         }
     },
     "components": {

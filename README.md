@@ -38,16 +38,16 @@ Para garantir performance e reduzir chamadas à API externa:
 
 ## 🛠️ Tecnologias Utilizadas <a id="tecnologias"></a>
 
--   ⚡️ **PHP 8.4** — Linguagem principal
--   🐘 **Laravel 12** — Framework para desenvolvimento REST
--   🐳 **Docker / Docker Compose** — Containerização e ambiente isolado
--   🐳 **PostgreSQL** — Banco de dados relacional
--   ✅ **Pest** — Framework de testes para garantir qualidade e cobertura de casos críticos
--   🗄️ **Swagger / OpenAPI** — Documentação clara e estruturada para a API
--   🔐 **Sanctum** — Autenticação e controle de acesso para endpoints protegidos
--   🌐 **Cache Laravel** — Melhor performance e escalabilidade para integração com FakeStore
--   🐞 **Log e Exceptions Laravel** — Controle de erros e registro para manutenção e debugging
--   🔥 **Environment Variables (.env)** — Configuração flexível e segura para diferentes contextos de deployment
+- 🐘 **PHP 8.4** — Linguagem principal do projeto  
+- ⚡️ **Laravel 12** — Framework para desenvolvimento REST  
+- 🐳 **Docker / Docker Compose** — Containerização e ambiente isolado  
+- 🗄️ **PostgreSQL** — Banco de dados relacional utilizado pela aplicação  
+- ✅ **Pest** — Framework de testes para garantir qualidade e cobertura de casos críticos  
+- 📄 **Swagger / OpenAPI** — Documentação clara e estruturada para a API  
+- 🔐 **Sanctum** — Autenticação e controle de acesso para endpoints protegidos  
+- 💾 **Cache Laravel** — Melhor performance e escalabilidade para integração com FakeStore  
+- 🐞 **Log e Exceptions Laravel** — Controle de erros e registro para manutenção e debugging  
+- 🔥 **Environment Variables (.env)** — Configuração flexível e segura para diferentes contextos de deployment  
 
 ## 🏗️ Arquitetura e Estrutura do Projeto <a id="arquitetura"></a>
 

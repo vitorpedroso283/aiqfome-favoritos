@@ -137,7 +137,7 @@ services:
             DB_CONNECTION: pgsql
             DB_HOST: db
             DB_PORT: 5432
-            DB_DATABASE: aiqfome-favorite.db
+            DB_DATABASE: aiqfome_favorite_db
             DB_USERNAME: laravel
             DB_PASSWORD: laravel
 
@@ -145,7 +145,7 @@ services:
         image: postgres:17.5-alpine
         container_name: laravel-db
         environment:
-            POSTGRES_DB: aiqfome-favorite.db
+            POSTGRES_DB: aiqfome_favorite_db
             POSTGRES_USER: laravel
             POSTGRES_PASSWORD: laravel
         volumes:

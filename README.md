@@ -8,6 +8,7 @@ Esta é a **AIQFome Favoritos API**, uma REST API para **gerenciamento de client
 -   [⚡️ Cacheamento](#️-cacheamento)
 -   [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
 -   [🏗️ Arquitetura e Estrutura do Projeto](#️-arquitetura-e-estrutura-do-projeto)
+-   [👤 Usuário Padrão para Testes](#-usuário-padrão-para-testes)
 -   [🚀 Como rodar o projeto](#-como-rodar-o-projeto)
 -   [✅ Testes e Documentação](#-testes-e-documentação)
 -   [📋 Exemplo de Requisições e Respostas](#-exemplo-de-requisições-e-respostas)
@@ -185,6 +186,17 @@ docker compose exec app php artisan migrate --seed
 
 Feito! ✅  
 Sua aplicação estará rodando em `http://localhost:8000`
+
+## 👤 Usuário Padrão para Testes
+
+Esta aplicação cria automaticamente um usuário padrão para facilitar testes e integração:
+
+-   **Email**: `esfomeado@user.com`
+-   **Senha**: `tocomfome`
+
+👉 O usuário é criado automaticamente através do **Seeder** (`database/seeders/UserSeeder.php`), não sendo necessária uma rota de registro para testes básicos.
+
+Se quiser alterar as credenciais, atualize o arquivo `UserSeeder.php`.
 
 ## ✅ Testes e Documentação
 

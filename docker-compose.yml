@@ -12,7 +12,7 @@ services:
       DB_CONNECTION: pgsql
       DB_HOST: db
       DB_PORT: 5432
-      DB_DATABASE: laravel
+      DB_DATABASE: aiqfome-favorite.db
       DB_USERNAME: laravel
       DB_PASSWORD: laravel
 

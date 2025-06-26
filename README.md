@@ -4,18 +4,18 @@ Esta é a **AIQFome Favoritos API**, uma REST API para **gerenciamento de client
 
 ## 📑 Sumário
 
--   [🛠️ Contexto e Decisão de Arquitetura](#-contexto-e-decisão-de-arquitetura)
--   [⚡️ Cacheamento](#️-cacheamento)
--   [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
--   [🏗️ Arquitetura e Estrutura do Projeto](#️-arquitetura-e-estrutura-do-projeto)
--   [👤 Usuário Padrão para Testes](#-usuário-padrão-para-testes)
--   [🚀 Como rodar o projeto](#-como-rodar-o-projeto)
--   [✅ Testes e Documentação](#-testes-e-documentação)
--   [📋 Exemplo de Requisições e Respostas](#-exemplo-de-requisições-e-respostas)
--   [⚡️ Decisões de Simplicidade e Arquitetura](#️-decisões-de-simplicidade-e-arquitetura)
--   [🙌 Considerações Finais](#-considerações-finais)
+-   [🛠️ Contexto e Decisão de Arquitetura](#contexto)
+-   [⚡️ Cacheamento](#cacheamento)
+-   [🛠️ Tecnologias Utilizadas](#tecnologias)
+-   [🏗️ Arquitetura e Estrutura do Projeto](#arquitetura)
+-   [👤 Usuário Padrão para Testes](#usuario-teste)
+-   [🚀 Como rodar o projeto](#como-rodar)
+-   [✅ Testes e Documentação](#testes)
+-   [📋 Exemplo de Requisições e Respostas](#exemplo-requisicoes)
+-   [⚡️ Decisões de Simplicidade e Arquitetura](#decisoes)
+-   [🙌 Considerações Finais](#consideracoes)
 
-## 🛠️ Contexto e Decisão de Arquitetura
+## 🛠️ Contexto e Decisão de Arquitetura <a id="contexto"></a>
 
 Esta solução foi implementada considerando que a API poderia servir como camada interna do Aiqfome para administrar favoritos e dados de clientes, e não como uma camada diretamente exposta ao cliente final. Dessa forma:
 
@@ -23,7 +23,7 @@ Esta solução foi implementada considerando que a API poderia servir como camad
 -   A autenticação (`user`) não representa o cliente final, mas sim o sistema ou operador responsável por administrar registros e favoritos.
 -   Se futuramente necessária, poderia ser adaptada para derivar o `customer_id` direto do token, atendendo ao cenário de cliente final.
 
-## ⚡️ Cacheamento
+## ⚡️ Cacheamento <a id="cacheamento"></a>
 
 Para garantir performance e reduzir chamadas à API externa:
 
@@ -35,7 +35,7 @@ Para garantir performance e reduzir chamadas à API externa:
 -   Se algum produto não existir mais na FakeStore, o registro correspondente é automaticamente excluído da tabela de favoritos para garantir consistência e limpeza dos dados.
 -   Dessa forma, evitamos múltiplas requisições desnecessárias à FakeStore e garantimos uma experiência de resposta rápida e atualizada.
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas <a id="tecnologias"></a>
 
 -   ⚡️ **PHP 8.4** — Linguagem principal
 -   🐘 **Laravel 12** — Framework para desenvolvimento REST
@@ -48,7 +48,7 @@ Para garantir performance e reduzir chamadas à API externa:
 -   🐞 **Log e Exceptions Laravel** — Controle de erros e registro para manutenção e debugging
 -   🔥 **Environment Variables (.env)** — Configuração flexível e segura para diferentes contextos de deployment
 
-## 🏗️ Arquitetura e Estrutura do Projeto
+## 🏗️ Arquitetura e Estrutura do Projeto <a id="arquitetura"></a>
 
 A aplicação foi estruturada para refletir uma arquitetura clara e organizada, com foco em **separação de responsabilidades**, facilidade de manutenção e alinhada às boas práticas do Laravel.
 
@@ -94,7 +94,7 @@ A aplicação foi estruturada para refletir uma arquitetura clara e organizada, 
 -   ✅ **Seeders** para popular usuário padrão teste da api.
 -   ✅ **Factories** para gerar dados consistentes e facilitar testes e desenvolvimento.
 
-## 🚀 Como rodar o projeto
+## 🚀 Como rodar o projeto <a id="como-rodar"></a>
 
 Rodar esta API Laravel + PostgreSQL é simples e direto graças ao Docker! 🙌  
 Basta subir todos os serviços com:
@@ -187,7 +187,7 @@ docker compose exec app php artisan migrate --seed
 Feito! ✅  
 Sua aplicação estará rodando em `http://localhost:8000`
 
-## 👤 Usuário Padrão para Testes
+## 👤 Usuário Padrão para Testes <a id="usuario-teste"></a>
 
 Esta aplicação cria automaticamente um usuário padrão para facilitar testes e integração:
 
@@ -198,7 +198,7 @@ Esta aplicação cria automaticamente um usuário padrão para facilitar testes 
 
 Se quiser alterar as credenciais, atualize o arquivo `UserSeeder.php`.
 
-## ✅ Testes e Documentação
+## ✅ Testes e Documentação <a id="testes"></a>
 
 Esta aplicação foi construída para facilitar testes e entendimento:
 
@@ -242,7 +242,7 @@ Se estiver utilizando Laravel Swagger (ou L5‑Swagger), depois de subir o ambie
 -   **Swagger** para fácil entendimento e integração
 -   **Pest** para garantir que todas as regras de negócio e casos críticos sejam atendidos e não sofram regressões
 
-## 📋 Exemplo de Requisições e Respostas
+## 📋 Exemplo de Requisições e Respostas <a id="exemplo-requisicoes"></a>
 
 ### 🔐 Autenticação
 
@@ -363,7 +363,7 @@ Exemplo de Response (200 — Sucesso):
 }
 ```
 
-## ⚡️ Decisões de Simplicidade e Arquitetura
+## ⚡️ Decisões de Simplicidade e Arquitetura <a id="decisoes"></a>
 
 ### 🗄️ Por que não usar Tags no Cache (Redis/Memcached)?
 
@@ -388,7 +388,7 @@ Exemplo de Response (200 — Sucesso):
 -   Dessa maneira, cada feature foi implementada com uma **comprovação prática** de que atende ao escopo requerido, facilitando manutenção e evoluções futuras.
 -   Resultado: menos bugs, mais previsibilidade e uma base de código sólida para escalar e adaptar.
 
-## 🙌 Considerações Finais
+## 🙌 Considerações Finais <a id="consideracoes"></a>
 
 Este desafio foi uma ótima oportunidade para refletir e praticar boas decisões de arquitetura, planejamento e execução antes de simplesmente começar a codar.
 

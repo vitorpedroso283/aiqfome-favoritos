@@ -109,6 +109,7 @@ cd aiqfome-favoritos
 ### ⚙️ 2️⃣ Suba todos os serviços
 
 ```bash
+docker compose build
 docker compose up
 ```
 

@@ -8,13 +8,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: aiqfome_favorite_db
-      DB_USERNAME: laravel
-      DB_PASSWORD: laravel
 
   db:
     image: postgres:17.5-alpine

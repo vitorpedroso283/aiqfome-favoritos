@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,17 +28,36 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->stopIgnoring(HttpException::class);
-        
-        // 404 padrão
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+
+        $exceptions->stopIgnoring(HttpException::class);
+
+        $exceptions->render(function (Throwable $e, Request $request) {
             if ($request->is('api/*')) {
-                return response()->json([
-                    'message' => 'Resource not found.'
-                ], 404);
+                if ($e instanceof ModelNotFoundException) {
+                    $model = class_basename($e->getModel());
+                    return response()->json([
+                        'message' => "$model not found."
+                    ], 404);
+                }
+
+                if ($e instanceof NotFoundHttpException) {
+                    $previous = $e->getPrevious();
+                    if ($previous instanceof ModelNotFoundException) {
+                        $model = class_basename($previous->getModel());
+                        return response()->json([
+                            'message' => "$model not found."
+                        ], 404);
+                    }
+
+                    return response()->json([
+                        'message' => 'Resource not found.'
+                    ], 404);
+                }
             }
+
+            return null; // fallback
         });
 
-        // 403 padronizado para falha de autorização via Sanctum ability
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
@@ -47,10 +67,6 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->shouldRenderJsonWhen(function (Request $request) {
-            if ($request->is('api/*')) {
-                return true;
-            }
-
-            return $request->expectsJson();
+            return $request->is('api/*') || $request->expectsJson();
         });
     })->create();

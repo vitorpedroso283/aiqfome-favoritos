@@ -110,7 +110,7 @@ cd aiqfome-favoritos
 
 ```bash
 docker compose build
-docker compose up
+docker compose up -d
 ```
 
 ### ⚡️ O que isso vai subir

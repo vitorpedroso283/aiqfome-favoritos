@@ -99,15 +99,17 @@ class CustomerFavoriteController extends Controller
      *     )
      * )
      */
-    public function index(int $customer_id, ListCustomerFavoritesRequest $request): AnonymousResourceCollection
+    public function index(int $customer, ListCustomerFavoritesRequest $request): AnonymousResourceCollection
     {
+        Customer::findOrFail($customer);
+
         $validated = $request->validated();
 
         $perPage = $validated['per_page'] ?? 10;
         $orderBy = $validated['order_by'] ?? 'product_id';
         $orderDir = $validated['order_dir'] ?? 'asc';
 
-        $favorites = $this->customerFavoriteService->all($customer_id, $perPage, $orderBy, $orderDir);
+        $favorites = $this->customerFavoriteService->all($customer, $perPage, $orderBy, $orderDir);
 
         return CustomerFavoriteResource::collection($favorites);
     }
@@ -155,12 +157,7 @@ class CustomerFavoriteController extends Controller
      */
     public function store(int $customer, StoreCustomerFavoriteRequest $request): JsonResponse|CustomerFavoriteResource
     {
-
-        if (!Customer::find($customer)) {
-            return response()->json([
-                'error' => 'Customer not found',
-            ], 404);
-        }
+        Customer::findOrFail($customer);
 
         $dto = StoreCustomerFavoriteDto::fromArray($request->validated());
 
@@ -195,9 +192,7 @@ class CustomerFavoriteController extends Controller
      */
     public function destroy(int $customer, int $product): JsonResponse
     {
-        if (!Customer::find($customer)) {
-            return response()->json(['error' => 'Customer not found'], 404);
-        }
+        Customer::findOrFail($customer);
 
         $deleted = $this->customerFavoriteService->remove($customer, $product);
 
